@@ -10,6 +10,7 @@ file that is based on [function timers][1]. This began as a profiling effort
 from the fruits of [mobile startup shrink][1].
 
 In order to generate a log file, do the following:
+
 1. You currently need to rebuild fennec to generate logs. Apply the patch in
    [bug 675233](https://bugzilla.mozilla.org/show_bug.cgi?id=675233) and
    add `--enable-functiontimer` to your `.mozconfig` file. There may also be
@@ -47,6 +48,7 @@ starting at the top left of the area and moving right and then down.  You can
 tap a box to see where it is located on the timeline.
 
 On the right hand side, you will notice several items.
+
 * `Log View` allows you to take a selection and see where it came from in the
   log. Click it to see. Click it again to go back to timeline view.
 * `Save Timeline As...` allows you to bundle up all the log data and
@@ -60,6 +62,7 @@ Contribution
 ------------
 
 A small tour of the code so far:
+
 * All the tests follow the pattern `*.test.js`
 * `timeline.html`: The glue that holds it all together.
 * `startup.js`: Code specific to timeline.html.
@@ -76,6 +79,7 @@ TODO List
 ---------
 
 P1: High Priority
+
 * Incorporate function timers into Fennec itself so that anyone would be able
   to examine their startup info.
 * Filter for including to session restore event.
@@ -83,6 +87,7 @@ P1: High Priority
   everything except `logparser.js` and `test.js` could use a rewrite.
 
 P2: Lower Priority
+
 * Allow for hierarchical messages ("Layout", "Gfx", "Javascript", etc.)
 * There is currently no way to upload a new log file.
 * Would be nice to see units across the timeline.
