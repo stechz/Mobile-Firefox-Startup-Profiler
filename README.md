@@ -3,7 +3,8 @@ Introduction
 
 This project allows you to understand what mobile Firefox is doing during
 startup by breaking it up into intervals of time parsed from a special log
-file.
+file that is based on [function timers][1]. This began as a profiling effort
+from the fruits of [mobile startup shrink][1].
 
 In order to generate a log file, do the following:
 1. You currently need to rebuild fennec to generate logs. Apply the patch in
@@ -24,6 +25,10 @@ data.
 
 Note that this was primarily designed for Firefox. I'd appreciate patches to
 get the parser working in other browsers that support the HTML5 FileReader API.
+
+This is a prototype, and there may be parsing bugs, so be sure to cross-check
+with the log view to make sure the parser got it right! Also, a lot of this
+work is
 
 Moving around the interface
 ===========================
@@ -85,12 +90,17 @@ P2: Lower Priority
 Contributors
 ============
 
-* [Benjamin Stover](http://stechz.com/)
+* [Benjamin Stover](http://stechz.com/), primary author
 
 If you are interested in owning and driving this project, please get in touch!
+I probably will not have a lot of time to own this myself.
 
 Special Thanks
 ==============
 
 * [Mozilla](http://mozilla.org/) for the excellent MDC documentation and for
   the gradient idea seen on about:home! :)
+
+
+[1]: http://mxr.mozilla.org/mozilla-central/source/xpcom/base/FunctionTimer.h 
+[2]: https://wiki.mozilla.org/Firefox/Projects/Mobile_Startup_Shrink
