@@ -225,9 +225,6 @@ if (description) {
 //////////////////////////////////////////////////////////////////////////////
 
 function keyPress(ev) {
-  if (logMode)
-    return;
-
   var delta = 0;
   switch (ev.keyCode) {
     case 39: // right
@@ -242,8 +239,8 @@ function keyPress(ev) {
 
   selectionMode = true;
 
-  var selected = example.labelled();
-  if (selected.entries.length === 0) {
+  var selected = selectedSection;
+  if (!selected || selected.entries.length === 0) {
     selected = example.filter(0);
     delta = 0;
   }
