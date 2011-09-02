@@ -1,5 +1,8 @@
+Startup Profiler
+================
+
 Introduction
-============
+------------
 
 This project allows you to understand what mobile Firefox is doing during
 startup by breaking it up into intervals of time parsed from a special log
@@ -31,7 +34,7 @@ with the log view to make sure the parser got it right! Also, a lot of this
 work is
 
 Moving around the interface
-===========================
+---------------------------
 
 The first thing you will do is "upload" the file. There is no server needed for
 this. If you want to see the interface without all the muss and fuss, try out
@@ -54,7 +57,7 @@ On the right hand side, you will notice several items.
 * `Options` allows you to filter the logfile to produce different timelines.
 
 Contribution
-============
+------------
 
 A small tour of the code so far:
 * All the tests follow the pattern `*.test.js`
@@ -70,10 +73,9 @@ Most of the code was hacked together in a rush and definitely fits into
 "prototype" status. Patches definitely welcome!
 
 TODO List
-=========
+---------
 
 P1: High Priority
------------------
 * Incorporate function timers into Fennec itself so that anyone would be able
   to examine their startup info.
 * Filter for including to session restore event.
@@ -81,14 +83,13 @@ P1: High Priority
   everything except `logparser.js` and `test.js` could use a rewrite.
 
 P2: Lower Priority
-------------------
 * Allow for hierarchical messages ("Layout", "Gfx", "Javascript", etc.)
 * There is currently no way to upload a new log file.
 * Would be nice to see units across the timeline.
 * Bug: resizing window messes up layout in many, many ways
 
 Contributors
-============
+------------
 
 * [Benjamin Stover](http://stechz.com/), primary author
 
@@ -96,7 +97,7 @@ If you are interested in owning and driving this project, please get in touch!
 I probably will not have a lot of time to own this myself.
 
 Special Thanks
-==============
+--------------
 
 * [Mozilla](http://mozilla.org/) for the excellent MDC documentation and for
   the gradient idea seen on about:home! :)
