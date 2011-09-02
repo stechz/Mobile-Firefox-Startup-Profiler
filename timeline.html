@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<!-- Prototype by Benjamin Stover -->
+<html>
+<head>
+  <title>Startup Timeline</title>
+  <style type="text/css">
+    body {
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      font-family: sans-serif;
+      color: #444;
+      line-height: 1.2;
+    }
+
+    #copypaste {
+      text-align: left;
+      font-family: monospace;
+      white-space: pre;
+    }
+
+    a[disabled] {
+      color: gray;
+      -moz-text-decoration-style: dashed;
+    }
+
+    h1 {
+      font-variant: small-caps;
+      color: #222;
+    }
+
+    #timeline-container figure > h1 {
+      font-size: 2em;
+    }
+
+    #timeline-container figure > h2 {
+      font-size: 1em;
+    }
+
+    h2 {
+      font-size: .8em;
+      font-weight: normal;
+    }
+
+    figure {
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    timeline {
+      position: relative;
+      visibility: hidden;
+      display: block;
+      height: 50px;
+      max-width: 800px;
+      margin: auto;
+      margin-top: 2.5em;
+      padding-bottom: 3.5em;
+    }
+
+    timeline g {
+      cursor: pointer;
+      opacity: 1;
+      -moz-transition-duration: 300ms;
+      -moz-transition-property: opacity;
+    }
+
+    timeline g:hover {
+      opacity: 1;
+    }
+
+    timeline.active {
+      visibility: visible;
+    }
+
+    timeline.active svg {
+      display: block;
+    }
+
+    /* Parent div that is absolutely positioned and sized. */
+    div.caption {
+      -webkit-transition-property: opacity;
+      -webkit-transition-duration: 300ms;
+      -moz-transition-property: opacity;
+      -moz-transition-duration: 300ms;
+      left: 0;
+      position: absolute;
+    }
+
+    div.caption.visible {
+      opacity: 1;
+    }
+
+    div.caption.transitioning {
+      -webkit-transition-property: opacity, max-width, width, left;
+      -webkit-transition-duration: 300ms;
+      -moz-transition-property: opacity, max-width, width, left;
+      -moz-transition-duration: 300ms;
+    }
+
+    /* The child div uses margin left and right 50% to appear to grow into
+       the parent div size. */
+    div.caption .timeline-arrow {
+      padding-top: .5em;
+      -webkit-transition-property: margin;
+      -webkit-transition-duration: 300ms;
+      -moz-transition-property: margin;
+      -moz-transition-duration: 300ms;
+      border-top: 1px #444 solid;
+      margin-left: 50%;
+      margin-right: 50%;
+    }
+
+    div.caption.visible .timeline-arrow {
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    /* Text inside caption */
+    div.timeline-text {
+      padding-top: 1em;
+      font-size: 12px;
+      margin: auto;
+      position: absolute;
+      text-align: center;
+    }
+
+    div.timeline-text * {
+      margin: auto;
+      text-align: center;
+    }
+
+    figure div[data-for] {
+      display: none;
+    }
+
+    .description-background {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      -webkit-transition-duration: 300ms;
+      -moz-transition-duration: 300ms;
+      background-repeat: no-repeat;
+      background-size: 100% 5px, 100% 50px, 100% 100%;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .description-background.select {
+      opacity: 1;
+      z-index: 1;
+    }
+
+    .description {
+      padding: 25px 0px;
+      text-align: left;
+      z-index: 2;
+    }
+
+    .description h1 {
+      font-size: 1.1em;
+    }
+
+    .description li {
+      font-family: monospace;
+      font-size: 1.1em;
+    }
+
+    .description li.select {
+      font-weight: bold;
+    }
+
+    article {
+      padding-top: 3em;
+      margin: auto;
+      display: none;
+      font-size: .85em;
+    }
+
+    article.select {
+      display: block;
+    }
+
+    figure.code {
+      font-size: 1.1em;
+      font-family: monospace;
+      margin: .25em;
+    }
+
+    #timeline {
+      position: relative;
+      margin-left: -300px;
+      margin-top: 0;
+      padding-top: 0;
+    }
+
+    #timeline-container {
+      margin: auto;
+      display: inline-block;
+      max-width: 800px;
+      margin-top: 0;
+      padding-top: 0;
+    }
+
+    #uploadArticle {
+      max-width: 800px;
+      text-align: left;
+    }
+
+    #upload {
+      margin-left: 1em;
+      min-width: 500px;
+    }
+
+    aside {
+      position: fixed;
+      right: 0;
+      top: 0;
+      height: 100%;
+      background-color: #f4f4f4;
+      border-left: solid #444 1px;
+      width: 300px;
+      text-align: left;
+      padding: 0px 10px;
+      padding-bottom: 10px;
+      line-height: 1.5;
+    }
+
+    aside h1 {
+      margin: 8px 0px;
+    }
+
+    aside dl {
+      margin: 0;
+      margin-left: 1em;
+    }
+
+    aside dt {
+      font-weight: bold;
+    }
+
+    aside dd {
+      margin-left: 1em;
+    }
+
+    .description ol {
+      overflow-y: auto;
+      vertical-align: top;
+      list-style-type: none;
+    }
+
+    .description li {
+      display: inline-block;
+    }
+
+    .description .time {
+      cursor: pointer;
+      text-align: center;
+      display: inline-block;
+      background-color: #f4f4f4;
+      min-width: 5em;
+      padding: 10px 5px;
+      margin: 10px;
+    }
+
+    .description .time:hover {
+      outline: 1px dashed #444;
+    }
+
+    .description li.select .time {
+      outline: 1px solid #444;
+    }
+
+    .description .time * {
+      pointer-events: none;
+    }
+
+    .description .primary {
+      font-size: 1.5em;
+    }
+    
+    #timeline-details dt {
+      display: inline-block;
+      margin: 0;
+    }
+
+    #timeline-details dd {
+      font-size: 1.2em;
+      display: inline-block;
+      margin: 0;
+      margin-left: 0.2em;
+      font-family: monospace;
+    }
+
+    #timeline-legend dt {
+      border: solid #666 1px;
+      border-radius: 2px;
+      margin-left: 4px;
+      width: 1em;
+      height: 1em;
+      display: inline-block;
+    }
+
+    #timeline-legend dd {
+      display: inline-block;
+      margin: 0 0 0 .25em;
+    }
+
+    #log {
+      font-size: 1.2em;
+      font-family: monospace;
+      white-space: pre;
+      overflow: auto;
+      text-align: left;
+      height: 1px;
+    }
+
+    .description > h1, .description > p {
+      display: inline-block;
+    }
+
+    .description > p {
+      margin-left: 1.5em;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <article id="uploadArticle" class="select">
+    <h1>Startup Log Parser</h1>
+    <p>
+      This project allows you to understand what mobile Firefox is doing
+      during startup by breaking it up into intervals of time parsed from a
+      special log file. You can find out more information about the project <a
+      href="https://github.com/stechz/Mobile-Firefox-Startup-Profiler">at the
+      GitHub page</a>.
+    </p>
+    <p>
+      Select the generated log file you want to examine below.
+    </p>
+    <p>&#x21fe; Log file<input id="upload" type="file" name="upload" onchange="loadFile()"/></p>
+  </article>
+
+  <article id="timeline">
+    <div id="timeline-container">
+      <figure>
+        <h1>Startup Timeline Data</h1>
+        <h2>Tap anywhere on the timeline to get more information.</h2>
+        <h2>You may use the left and right arrow keys to move between small intervals.</h2>
+        <timeline>
+        </timeline>
+      </figure>
+
+      <div style="max-width: 800px; position: relative; margin: auto">
+        <div class="description-background">
+        </div>
+        <div class="description-background">
+        </div>
+        <div class="description">
+        </div>
+        <div id="log">
+        </div>
+      </div>
+    </div>
+    <aside>
+      <h1><a id="toggleLog" disabled="true" href="#foo" onclick="javascript: toggleLogMode(); return false;">Log View</a></h1>
+      <h1><a id="saveAs" href="#foo" onclick="javascript: return false;">Save Timeline As...</a></h1>
+      <div id="timeline-details">
+        <h1>Details</h1>
+        <dl>
+          <dt>Total Time</dt>
+          <dd id="timeline-total-time"></dd>
+      </div>
+      <div id="timeline-legend">
+        <h1>Legend</h1>
+        <dl></dl>
+      </div>
+      <div id="timeline-options">
+        <h1>Options</h1>
+        <dl></dl>
+      </div>
+    </aside>
+  </article>
+
+  <script type="text/javascript" src="timeline.js"></script>
+  <script type="text/javascript" src="logparser.js"></script>
+  <script type="text/javascript" src="startup.js"></script>
+  <script type="text/javascript" src="test.js"></script>
+</body>
+</html>
+
